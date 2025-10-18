@@ -139,10 +139,10 @@ namespace IdentityProject.Controllers
                 }
                 return View(model);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                return NotFound(ex.Message);
             }
         }
 
