@@ -26,6 +26,7 @@ namespace IdentityProject.Controllers
 
             return View();
         }
+
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
@@ -210,37 +211,46 @@ namespace IdentityProject.Controllers
         [HttpGet]
         public async Task<IActionResult> EditUsersInRole(string id)
         {
-
-            var Role =await _RoleManager.FindByIdAsync(id);
-
-            if (Role == null)
-            
-                return NotFound();
-
-
-            var model = new List<UserRoleViewModel>();
-
-            foreach (var Users in _UserManager.Users)
+            try
             {
+                var Role = await _RoleManager.FindByIdAsync(id);
 
-                var UserRoleViewModel = new UserRoleViewModel
-                {
-                    UserId = Users.Id,
-                    UserName = Users.UserName
-                };
+                if (Role == null)
 
-                if (await _UserManager.IsInRoleAsync(Users , Role.Name))
+                    return NotFound();
+
+
+                var model = new List<UserRoleViewModel>();
+
+                foreach (var Users in _UserManager.Users)
                 {
-                    UserRoleViewModel.IsSelected = true;
+
+                    var UserRoleViewModel = new UserRoleViewModel
+                    {
+                        UserId = Users.Id,
+                        UserName = Users.UserName
+                    };
+
+                    if (await _UserManager.IsInRoleAsync(Users, Role.Name))
+                    {
+                        UserRoleViewModel.IsSelected = true;
+                    }
+                    else
+                    {
+                        UserRoleViewModel.IsSelected = false;
+                    }
+                    model.Add(UserRoleViewModel);
                 }
-                else
-                {
-                    UserRoleViewModel.IsSelected = false;
-                }
-                model.Add(UserRoleViewModel);
+
+                return View();
             }
 
-            return View();
+            catch (Exception)
+            {
+
+                throw;
+            }
+          
         }
     }
 }
