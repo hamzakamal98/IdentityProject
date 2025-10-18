@@ -20,8 +20,10 @@ namespace IdentityProject.Controllers
         #region Register
         [AllowAnonymous]
         [HttpGet]
+
         public IActionResult Register()
         {
+
             return View();
         }
         [AllowAnonymous]
@@ -37,6 +39,7 @@ namespace IdentityProject.Controllers
                         Email = model.Email,
                         UserName = model.UserName,
                         PhoneNumber = model.Telephone,
+
                     };
                     var Result = await _UserManager.CreateAsync(user, model.Password);
 
@@ -98,6 +101,7 @@ namespace IdentityProject.Controllers
             }
         }
         #endregion
+        // Roles 
         public IActionResult RolesList()
         {
             var RoleList = _RoleManager.Roles.ToList();
